@@ -1,44 +1,54 @@
-/* Global Styles */
-@import '@fontsource/roboto';
-
-body {
-  margin: 0;
-  font-family: 'Roboto', sans-serif;
-  background-color: #f5f5f5;
-}
-
-#root {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-/* Material UI overrides */
-.MuiCard-root {
-  border-radius: 12px !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
-}
-
-/* Recharts overrides */
+/* Chart Styles */
 .recharts-wrapper {
-  font-family: 'Roboto', sans-serif !important;
+  .recharts-cartesian-grid-horizontal line,
+  .recharts-cartesian-grid-vertical line {
+    stroke: rgba(255, 255, 255, 0.1);
+  }
+
+  .recharts-legend-item {
+    .recharts-surface {
+      margin-right: 10px;
+    }
+  }
+
+  .recharts-legend-item-text {
+    font-size: 1rem !important;
+    fill: rgba(255, 255, 255, 0.8) !important;
+  }
+
+  .recharts-tooltip-cursor {
+    fill: rgba(255, 255, 255, 0.1);
+  }
+
+  .recharts-default-tooltip {
+    background-color: #1e1e1e !important;
+    border: 1px solid #333 !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3) !important;
+    
+    .recharts-tooltip-label {
+      color: #90caf9 !important;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    
+    .recharts-tooltip-item {
+      font-size: 1.1rem !important;
+      padding: 6px 0;
+    }
+  }
 }
 
-.recharts-wrapper {
-  font-family: 'Roboto', sans-serif !important;
-}
-
-.recharts-cartesian-grid line {
-  stroke: #e0e0e0;
-}
-
-.recharts-tooltip {
-  background: #fff !important;
-  border: 1px solid #e0e0e0 !important;
-  border-radius: 4px !important;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1) !important;
-}
-
-.recharts-legend-item-text {
-  font-size: 14px !important;
+/* Responsive Adjustments */
+@media (max-width: 900px) {
+  .recharts-legend-wrapper {
+    position: relative !important;
+    width: 100% !important;
+    margin-top: 20px !important;
+  }
+  
+  .recharts-legend-item {
+    display: inline-block !important;
+    margin-right: 15px !important;
+  }
 }

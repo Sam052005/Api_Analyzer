@@ -6,8 +6,7 @@ import {
   Card,
   CardContent,
   LinearProgress,
-  useTheme,
-  useMediaQuery
+  useTheme
 } from '@mui/material';
 import { 
   BarChart, 
@@ -26,14 +25,20 @@ import {
 } from 'recharts';
 import { fetchDashboardData } from '../services/apiService';
 
-// Color palette for charts
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
-
 const Dashboard = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+  // Chart colors
+  const CHART_COLORS = [
+    theme.palette.primary.main,
+    theme.palette.secondary.main,
+    '#4fc3f7',
+    '#4db6ac',
+    '#81c784',
+    '#ffb74d'
+  ];
 
   useEffect(() => {
     const loadData = async () => {
@@ -48,85 +53,90 @@ const Dashboard = () => {
     };
 
     loadData();
-    const interval = setInterval(loadData, 30000); // Refresh every 30 seconds
+    const interval = setInterval(loadData, 30000);
 
     return () => clearInterval(interval);
   }, []);
 
+  // New dimensions
+  const chartHeight = 500;
+  const cardMargin = { top: 25, right: 30, left: 20, bottom: 25 };
+
   if (loading) return <LinearProgress />;
   if (!data) return <Typography>No data available</Typography>;
 
-  // Calculate dynamic height for charts based on screen size
-  const chartHeight = isMobile ? 300 : 400;
-  const pieChartOuterRadius = isMobile ? 80 : 120;
-
   return (
-    <Box sx={{ 
-      p: isMobile ? 2 : 3,
-      overflow: 'hidden',
-      minHeight: '100vh'
-    }}>
-      <Typography variant="h4" gutterBottom sx={{ 
-        mb: 3,
-        fontSize: isMobile ? '1.5rem' : '2rem',
-        fontWeight: 600
+    <Box sx={{ p: 4 }}>
+      <Typography variant="h3" gutterBottom sx={{ 
+        mb: 5, 
+        fontWeight: 700,
+        color: theme.palette.text.primary
       }}>
-        API Monitoring Dashboard
+        API PERFORMANCE DASHBOARD
       </Typography>
 
-      <Grid container spacing={3} sx={{ marginBottom: 3 }}>
+      <Grid container spacing={4}>
         {/* Response Times Chart */}
-        <Grid item xs={12} md={8}>
+        <Grid item xs={12} lg={8}>
           <Card sx={{ 
             height: '100%',
-            display: 'flex',
-            flexDirection: 'column',
-            borderRadius: 2,
-            boxShadow: 3
+            borderRadius: '12px',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.3)'
           }}>
-            <CardContent sx={{ 
-              flexGrow: 1,
-              '&:last-child': { 
-                paddingBottom: 2 
-              }
-            }}>
-              <Typography variant="h6" gutterBottom sx={{ fontWeight: 500 }}>
-                Response Times (ms)
+            <CardContent>
+              <Typography variant="h4" gutterBottom sx={{ 
+                mb: 3,
+                color: theme.palette.primary.main,
+                fontWeight: 600
+              }}>
+                RESPONSE TIMES (MS)
               </Typography>
               <ResponsiveContainer width="100%" height={chartHeight}>
                 <LineChart 
                   data={data.responseTimes}
-                  margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                  margin={cardMargin}
                 >
-                  <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                  <CartesianGrid 
+                    strokeDasharray="3 3" 
+                    stroke={theme.palette.divider} 
+                  />
                   <XAxis 
                     dataKey="name" 
-                    tick={{ fill: theme.palette.text.secondary }}
+                    tick={{ 
+                      fill: theme.palette.text.secondary,
+                      fontSize: '0.95rem'
+                    }}
                   />
                   <YAxis 
-                    tick={{ fill: theme.palette.text.secondary }}
-                    label={{ 
-                      value: 'ms', 
-                      angle: -90, 
+                    tick={{ 
+                      fill: theme.palette.text.secondary,
+                      fontSize: '0.95rem'
+                    }}
+                    label={{
+                      value: 'Milliseconds',
+                      angle: -90,
                       position: 'insideLeft',
-                      fill: theme.palette.text.primary
+                      fill: theme.palette.text.primary,
+                      fontSize: '1.1rem'
                     }}
                   />
                   <Tooltip 
                     contentStyle={{
-                      background: theme.palette.background.paper,
+                      backgroundColor: theme.palette.background.paper,
                       borderColor: theme.palette.divider,
-                      borderRadius: 4
+                      color: theme.palette.text.primary,
+                      fontSize: '1.1rem',
+                      borderRadius: '8px'
                     }}
                   />
-                  <Legend />
+                  <Legend wrapperStyle={{ paddingTop: '40px' }} />
                   <Line 
                     type="monotone" 
                     dataKey="value" 
-                    stroke={theme.palette.primary.main} 
-                    strokeWidth={2}
-                    dot={{ r: 4 }}
-                    activeDot={{ r: 6, strokeWidth: 0 }}
+                    stroke={CHART_COLORS[0]} 
+                    strokeWidth={3}
+                    dot={{ r: 5 }}
+                    activeDot={{ r: 8, strokeWidth: 0 }}
                   />
                 </LineChart>
               </ResponsiveContainer>
@@ -135,50 +145,60 @@ const Dashboard = () => {
         </Grid>
 
         {/* Status Code Distribution */}
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} lg={4}>
           <Card sx={{ 
             height: '100%',
-            borderRadius: 2,
-            boxShadow: 3
+            borderRadius: '12px',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.3)'
           }}>
-            <CardContent sx={{ 
-              display: 'flex',
-              flexDirection: 'column',
-              height: '100%'
-            }}>
-              <Typography variant="h6" gutterBottom sx={{ fontWeight: 500 }}>
-                Status Codes
+            <CardContent>
+              <Typography variant="h4" gutterBottom sx={{ 
+                mb: 3,
+                color: theme.palette.secondary.main,
+                fontWeight: 600
+              }}>
+                STATUS CODES
               </Typography>
-              <Box sx={{ flexGrow: 1 }}>
-                <ResponsiveContainer width="100%" height={chartHeight}>
-                  <PieChart>
-                    <Pie
-                      data={data.statusCodes}
-                      cx="50%"
-                      cy="50%"
-                      labelLine={false}
-                      outerRadius={pieChartOuterRadius}
-                      innerRadius={pieChartOuterRadius - 30}
-                      dataKey="value"
-                      label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
-                    >
-                      {data.statusCodes.map((entry, index) => (
-                        <Cell 
-                          key={`cell-${index}`} 
-                          fill={COLORS[index % COLORS.length]} 
-                        />
-                      ))}
-                    </Pie>
-                    <Tooltip 
-                      contentStyle={{
-                        background: theme.palette.background.paper,
-                        borderColor: theme.palette.divider,
-                        borderRadius: 4
-                      }}
-                    />
-                  </PieChart>
-                </ResponsiveContainer>
-              </Box>
+              <ResponsiveContainer width="100%" height={chartHeight}>
+                <PieChart>
+                  <Pie
+                    data={data.statusCodes}
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={150}
+                    innerRadius={70}
+                    paddingAngle={3}
+                    dataKey="value"
+                    label={({ name, percent }) => `${name}\n${(percent * 100).toFixed(0)}%`}
+                    labelLine={false}
+                  >
+                    {data.statusCodes.map((entry, index) => (
+                      <Cell 
+                        key={`cell-${index}`} 
+                        fill={CHART_COLORS[index % CHART_COLORS.length]} 
+                      />
+                    ))}
+                  </Pie>
+                  <Tooltip 
+                    contentStyle={{
+                      backgroundColor: theme.palette.background.paper,
+                      borderColor: theme.palette.divider,
+                      color: theme.palette.text.primary,
+                      fontSize: '1.1rem',
+                      borderRadius: '8px'
+                    }}
+                  />
+                  <Legend 
+                    layout="vertical"
+                    verticalAlign="middle"
+                    align="right"
+                    wrapperStyle={{
+                      paddingLeft: '40px',
+                      fontSize: '1rem'
+                    }}
+                  />
+                </PieChart>
+              </ResponsiveContainer>
             </CardContent>
           </Card>
         </Grid>
@@ -186,44 +206,61 @@ const Dashboard = () => {
         {/* Endpoint Traffic */}
         <Grid item xs={12}>
           <Card sx={{ 
-            borderRadius: 2,
-            boxShadow: 3
+            borderRadius: '12px',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.3)'
           }}>
             <CardContent>
-              <Typography variant="h6" gutterBottom sx={{ fontWeight: 500 }}>
-                Endpoint Traffic
+              <Typography variant="h4" gutterBottom sx={{ 
+                mb: 3,
+                color: theme.palette.primary.light,
+                fontWeight: 600
+              }}>
+                ENDPOINT TRAFFIC
               </Typography>
               <ResponsiveContainer width="100%" height={chartHeight}>
                 <BarChart 
                   data={data.endpointTraffic}
-                  margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                  margin={cardMargin}
                 >
-                  <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                  <CartesianGrid 
+                    strokeDasharray="3 3" 
+                    stroke={theme.palette.divider} 
+                  />
                   <XAxis 
                     dataKey="name" 
-                    tick={{ fill: theme.palette.text.secondary }}
+                    tick={{ 
+                      fill: theme.palette.text.secondary,
+                      fontSize: '0.95rem'
+                    }}
                   />
                   <YAxis 
-                    tick={{ fill: theme.palette.text.secondary }}
-                    label={{ 
-                      value: 'Requests', 
-                      angle: -90, 
+                    tick={{ 
+                      fill: theme.palette.text.secondary,
+                      fontSize: '0.95rem'
+                    }}
+                    label={{
+                      value: 'Requests',
+                      angle: -90,
                       position: 'insideLeft',
-                      fill: theme.palette.text.primary
+                      fill: theme.palette.text.primary,
+                      fontSize: '1.1rem'
                     }}
                   />
                   <Tooltip 
                     contentStyle={{
-                      background: theme.palette.background.paper,
+                      backgroundColor: theme.palette.background.paper,
                       borderColor: theme.palette.divider,
-                      borderRadius: 4
+                      color: theme.palette.text.primary,
+                      fontSize: '1.1rem',
+                      borderRadius: '8px'
                     }}
                   />
-                  <Legend />
+                  <Legend wrapperStyle={{ paddingTop: '40px' }} />
                   <Bar 
                     dataKey="requests" 
-                    fill={theme.palette.secondary.main} 
-                    radius={[4, 4, 0, 0]}
+                    fill={CHART_COLORS[1]} 
+                    radius={[6, 6, 0, 0]}
+                    barSize={40}
                   />
                 </BarChart>
               </ResponsiveContainer>
