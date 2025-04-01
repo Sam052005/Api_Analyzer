@@ -1,23 +1,63 @@
-import { List, ListItem, ListItemIcon, ListItemText, Box } from '@mui/material'
+import { List, ListItem, ListItemIcon, ListItemText, Box, Stack } from '@mui/material';
 import { 
   Dashboard as DashboardIcon,
   Analytics as AnalyticsIcon,
   Warning as AlertsIcon,
-  Settings as SettingsIcon
-} from '@mui/icons-material'
-import { Link, useLocation } from 'react-router-dom'
-import { useTheme } from '@mui/material/styles'
+  Settings as SettingsIcon,
+  PersonSearch as SherlockBaseIcon,
+  Search as MagnifyingGlassIcon
+} from '@mui/icons-material';
+import { Link, useLocation } from 'react-router-dom';
+import { useTheme } from '@mui/material/styles';
+
+// Custom Sherlock icon component
+const SherlockIcon = () => {
+  const theme = useTheme();
+  return (
+    <Stack position="relative" width={24} height={24}>
+      <SherlockBaseIcon 
+        sx={{ 
+          position: 'absolute',
+          color: theme.palette.secondary.main,
+          fontSize: '1.8rem'
+        }} 
+      />
+      <MagnifyingGlassIcon
+        sx={{
+          position: 'absolute',
+          bottom: -4,
+          right: -4,
+          color: theme.palette.primary.main,
+          fontSize: '1.2rem',
+          bgcolor: theme.palette.background.paper,
+          borderRadius: '50%',
+          p: 0.2
+        }}
+      />
+    </Stack>
+  );
+};
 
 const Sidebar = () => {
-  const location = useLocation()
-  const theme = useTheme()
+  const location = useLocation();
+  const theme = useTheme();
 
   const navItems = [
     { path: '/', name: 'Dashboard', icon: <DashboardIcon /> },
     { path: '/analytics', name: 'Analytics', icon: <AnalyticsIcon /> },
     { path: '/alerts', name: 'Alerts', icon: <AlertsIcon /> },
-    { path: '/settings', name: 'Settings', icon: <SettingsIcon /> }
-  ]
+    { path: '/settings', name: 'Settings', icon: <SettingsIcon /> },
+    { 
+      path: '/sherlock', 
+      name: 'Sherlock', 
+      icon: <SherlockIcon />,
+      sx: {
+        '& .MuiListItemIcon-root': {
+          minWidth: '46px'
+        }
+      }
+    }
+  ];
 
   return (
     <Box
@@ -41,24 +81,29 @@ const Sidebar = () => {
               to={item.path}
               selected={location.pathname === item.path}
               sx={{
-                '&.Mui-selected': {
-                  bgcolor: 'rgba(144, 202, 249, 0.16)',
+                '&:hover': {
+                  backgroundColor: 'rgba(144, 202, 249, 0.08)',
                   '& .MuiListItemIcon-root': {
                     color: theme.palette.primary.main
                   }
                 },
-                '&:hover': {
-                  bgcolor: 'rgba(144, 202, 249, 0.08)'
-                }
+                '&.Mui-selected': {
+                  backgroundColor: 'rgba(144, 202, 249, 0.16)',
+                  '& .MuiListItemIcon-root': {
+                    color: theme.palette.primary.main
+                  }
+                },
+                ...item.sx
               }}
             >
-              <ListItemIcon sx={{ color: theme.palette.text.secondary }}>
+              <ListItemIcon sx={{ minWidth: '40px' }}>
                 {item.icon}
               </ListItemIcon>
               <ListItemText 
                 primary={item.name} 
                 primaryTypographyProps={{
-                  color: theme.palette.text.primary
+                  fontWeight: 600,
+                  fontSize: '0.95rem'
                 }}
               />
             </ListItem>
@@ -66,7 +111,7 @@ const Sidebar = () => {
         </List>
       </Box>
     </Box>
-  )
-}
+  );
+};
 
-export default Sidebar
+export default Sidebar;

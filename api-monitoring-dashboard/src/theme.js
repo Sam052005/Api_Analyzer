@@ -5,11 +5,13 @@ const darkTheme = createTheme({
     mode: 'dark',
     primary: {
       main: '#90caf9',
-      contrastText: '#000'
+      dark: '#42a5f5',
+      light: '#e3f2fd'
     },
     secondary: {
       main: '#ce93d8',
-      contrastText: '#000'
+      dark: '#ab47bc',
+      light: '#f3e5f5'
     },
     background: {
       default: '#121212',
@@ -21,45 +23,23 @@ const darkTheme = createTheme({
     },
     divider: 'rgba(255, 255, 255, 0.12)'
   },
-  typography: {
-    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
-    h3: {
-      fontWeight: 700,
-      fontSize: '2.2rem'
-    },
-    h4: {
-      fontWeight: 600,
-      fontSize: '1.8rem'
-    },
-    h6: {
-      fontWeight: 500
-    }
-  },
   components: {
-    MuiCssBaseline: {
+    MuiListItemIcon: {
       styleOverrides: {
-        body: {
-          backgroundColor: '#121212',
-          '&::-webkit-scrollbar': {
-            width: '10px'
-          },
-          '&::-webkit-scrollbar-track': {
-            background: '#1e1e1e'
-          },
-          '&::-webkit-scrollbar-thumb': {
-            background: '#555',
-            borderRadius: '5px'
+        root: {
+          '& .Sherlock-icon': {
+            color: '#ff9800',
+            transform: 'scale(1.3)',
+            marginRight: '8px'
           }
         }
       }
     },
-    MuiCard: {
+    MuiAvatar: {
       styleOverrides: {
         root: {
-          transition: 'all 0.3s ease',
-          '&:hover': {
-            transform: 'translateY(-5px)',
-            boxShadow: '0 12px 24px rgba(0,0,0,0.4)'
+          '&.Sherlock-avatar': {
+            boxShadow: `0 0 0 4px #1e1e1e, 0 0 20px #90caf9`
           }
         }
       }
