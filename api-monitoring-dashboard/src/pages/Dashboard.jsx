@@ -30,14 +30,14 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const theme = useTheme();
 
-  // Chart colors
+  // Dark theme chart colors
   const CHART_COLORS = [
-    theme.palette.primary.main,
-    theme.palette.secondary.main,
-    '#4fc3f7',
-    '#4db6ac',
-    '#81c784',
-    '#ffb74d'
+    '#4fc3f7',  // Light blue
+    '#81c784',  // Light green
+    '#ffb74d',  // Light orange
+    '#ba68c8',  // Light purple
+    '#4db6ac',  // Teal
+    '#ff8a65'   // Light red-orange
   ];
 
   useEffect(() => {
@@ -58,7 +58,6 @@ const Dashboard = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // New dimensions
   const chartHeight = 500;
   const cardMargin = { top: 25, right: 30, left: 20, bottom: 25 };
 
@@ -66,11 +65,16 @@ const Dashboard = () => {
   if (!data) return <Typography>No data available</Typography>;
 
   return (
-    <Box sx={{ p: 4 }}>
+    <Box sx={{ 
+      p: 4,
+      backgroundColor: theme.palette.background.default,
+      minHeight: '100vh'
+    }}>
       <Typography variant="h3" gutterBottom sx={{ 
         mb: 5, 
         fontWeight: 700,
-        color: theme.palette.text.primary
+        color: theme.palette.text.primary,
+        textShadow: '0 2px 10px rgba(255,255,255,0.1)'
       }}>
         API PERFORMANCE DASHBOARD
       </Typography>
@@ -81,12 +85,14 @@ const Dashboard = () => {
           <Card sx={{ 
             height: '100%',
             borderRadius: '12px',
-            boxShadow: '0 8px 32px rgba(0,0,0,0.3)'
+            boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
+            backgroundColor: theme.palette.background.paper,
+            border: `1px solid ${theme.palette.divider}`
           }}>
             <CardContent>
               <Typography variant="h4" gutterBottom sx={{ 
                 mb: 3,
-                color: theme.palette.primary.main,
+                color: CHART_COLORS[0],
                 fontWeight: 600
               }}>
                 RESPONSE TIMES (MS)
@@ -106,12 +112,14 @@ const Dashboard = () => {
                       fill: theme.palette.text.secondary,
                       fontSize: '0.95rem'
                     }}
+                    stroke={theme.palette.text.secondary}
                   />
                   <YAxis 
                     tick={{ 
                       fill: theme.palette.text.secondary,
                       fontSize: '0.95rem'
                     }}
+                    stroke={theme.palette.text.secondary}
                     label={{
                       value: 'Milliseconds',
                       angle: -90,
@@ -126,10 +134,16 @@ const Dashboard = () => {
                       borderColor: theme.palette.divider,
                       color: theme.palette.text.primary,
                       fontSize: '1.1rem',
-                      borderRadius: '8px'
+                      borderRadius: '8px',
+                      boxShadow: theme.shadows[4]
                     }}
                   />
-                  <Legend wrapperStyle={{ paddingTop: '40px' }} />
+                  <Legend 
+                    wrapperStyle={{ 
+                      paddingTop: '40px',
+                      color: theme.palette.text.primary 
+                    }} 
+                  />
                   <Line 
                     type="monotone" 
                     dataKey="value" 
@@ -149,12 +163,14 @@ const Dashboard = () => {
           <Card sx={{ 
             height: '100%',
             borderRadius: '12px',
-            boxShadow: '0 8px 32px rgba(0,0,0,0.3)'
+            boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
+            backgroundColor: theme.palette.background.paper,
+            border: `1px solid ${theme.palette.divider}`
           }}>
             <CardContent>
               <Typography variant="h4" gutterBottom sx={{ 
                 mb: 3,
-                color: theme.palette.secondary.main,
+                color: CHART_COLORS[1],
                 fontWeight: 600
               }}>
                 STATUS CODES
@@ -185,7 +201,8 @@ const Dashboard = () => {
                       borderColor: theme.palette.divider,
                       color: theme.palette.text.primary,
                       fontSize: '1.1rem',
-                      borderRadius: '8px'
+                      borderRadius: '8px',
+                      boxShadow: theme.shadows[4]
                     }}
                   />
                   <Legend 
@@ -194,7 +211,8 @@ const Dashboard = () => {
                     align="right"
                     wrapperStyle={{
                       paddingLeft: '40px',
-                      fontSize: '1rem'
+                      fontSize: '1rem',
+                      color: theme.palette.text.primary
                     }}
                   />
                 </PieChart>
@@ -207,12 +225,14 @@ const Dashboard = () => {
         <Grid item xs={12}>
           <Card sx={{ 
             borderRadius: '12px',
-            boxShadow: '0 8px 32px rgba(0,0,0,0.3)'
+            boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
+            backgroundColor: theme.palette.background.paper,
+            border: `1px solid ${theme.palette.divider}`
           }}>
             <CardContent>
               <Typography variant="h4" gutterBottom sx={{ 
                 mb: 3,
-                color: theme.palette.primary.light,
+                color: CHART_COLORS[2],
                 fontWeight: 600
               }}>
                 ENDPOINT TRAFFIC
@@ -232,12 +252,14 @@ const Dashboard = () => {
                       fill: theme.palette.text.secondary,
                       fontSize: '0.95rem'
                     }}
+                    stroke={theme.palette.text.secondary}
                   />
                   <YAxis 
                     tick={{ 
                       fill: theme.palette.text.secondary,
                       fontSize: '0.95rem'
                     }}
+                    stroke={theme.palette.text.secondary}
                     label={{
                       value: 'Requests',
                       angle: -90,
@@ -252,10 +274,16 @@ const Dashboard = () => {
                       borderColor: theme.palette.divider,
                       color: theme.palette.text.primary,
                       fontSize: '1.1rem',
-                      borderRadius: '8px'
+                      borderRadius: '8px',
+                      boxShadow: theme.shadows[4]
                     }}
                   />
-                  <Legend wrapperStyle={{ paddingTop: '40px' }} />
+                  <Legend 
+                    wrapperStyle={{ 
+                      paddingTop: '40px',
+                      color: theme.palette.text.primary 
+                    }} 
+                  />
                   <Bar 
                     dataKey="requests" 
                     fill={CHART_COLORS[1]} 

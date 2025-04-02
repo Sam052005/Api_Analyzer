@@ -1,36 +1,67 @@
 import { createTheme } from '@mui/material/styles';
 
-const darkTheme = createTheme({
+const sherlockTheme = createTheme({
   palette: {
     mode: 'dark',
     primary: {
-      main: '#90caf9',
-      dark: '#42a5f5',
-      light: '#e3f2fd'
+      main: '#8B4513', // Sherlock's deerstalker brown
+      contrastText: '#fff'
     },
     secondary: {
-      main: '#ce93d8',
-      dark: '#ab47bc',
-      light: '#f3e5f5'
+      main: '#E6C229', // Victorian gold
+      contrastText: '#000'
     },
     background: {
       default: '#121212',
       paper: '#1e1e1e'
     },
     text: {
-      primary: '#ffffff',
+      primary: '#fff',
       secondary: 'rgba(255, 255, 255, 0.7)'
+    }
+  },
+  typography: {
+    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+    h1: {
+      fontFamily: '"Cinzel", serif',
     },
-    divider: 'rgba(255, 255, 255, 0.12)'
+    h2: {
+      fontFamily: '"Cinzel", serif',
+    },
+    h3: {
+      fontFamily: '"Cinzel", serif',
+    }
   },
   components: {
-    MuiListItemIcon: {
+    MuiCard: {
       styleOverrides: {
         root: {
-          '& .Sherlock-icon': {
-            color: '#ff9800',
-            transform: 'scale(1.3)',
-            marginRight: '8px'
+          transition: 'all 0.3s ease',
+          '&.Sherlock-tool': {
+            border: '1px solid #8B4513',
+            '&:hover': {
+              boxShadow: '0 8px 24px rgba(139, 69, 19, 0.5)'
+            }
+          }
+        }
+      }
+    },
+    MuiButton: {
+      styleOverrides: {
+        outlined: {
+          '&.Sherlock-button': {
+            borderColor: '#E6C229',
+            color: '#E6C229',
+            fontFamily: '"Cinzel", serif',
+            letterSpacing: '1px',
+            '&:hover': {
+              borderColor: '#FFD700'
+            }
+          }
+        },
+        contained: {
+          '&.Sherlock-float': {
+            boxShadow: '0 4px 12px rgba(139, 69, 19, 0.5)'
           }
         }
       }
@@ -39,7 +70,7 @@ const darkTheme = createTheme({
       styleOverrides: {
         root: {
           '&.Sherlock-avatar': {
-            boxShadow: `0 0 0 4px #1e1e1e, 0 0 20px #90caf9`
+            boxShadow: '0 0 10px #8B4513'
           }
         }
       }
@@ -47,4 +78,4 @@ const darkTheme = createTheme({
   }
 });
 
-export default darkTheme;
+export default sherlockTheme;

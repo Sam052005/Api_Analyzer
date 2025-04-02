@@ -18,7 +18,7 @@ const SherlockIcon = () => {
       <SherlockBaseIcon 
         sx={{ 
           position: 'absolute',
-          color: theme.palette.secondary.main,
+          color: '#64b5f6', // Using the secondary blue color
           fontSize: '1.8rem'
         }} 
       />
@@ -27,9 +27,9 @@ const SherlockIcon = () => {
           position: 'absolute',
           bottom: -4,
           right: -4,
-          color: theme.palette.primary.main,
+          color: '#1976d2', // Using the primary blue color
           fontSize: '1.2rem',
-          bgcolor: theme.palette.background.paper,
+          bgcolor: '#1e1e1e', // Matching the paper color
           borderRadius: '50%',
           p: 0.2
         }}
@@ -41,6 +41,18 @@ const SherlockIcon = () => {
 const Sidebar = () => {
   const location = useLocation();
   const theme = useTheme();
+
+  // Using the same color scheme as the Sherlock component
+  const colors = {
+    primary: '#1976d2',        // Blue primary color
+    secondary: '#64b5f6',      // Lighter blue for secondary
+    accent: '#4fc3f7',         // Bright blue for accent
+    background: '#121212',     // Dark background
+    paper: '#1e1e1e',          // Slightly lighter dark for paper
+    textPrimary: '#ffffff',    // White text
+    textSecondary: '#bbbbbb',  // Light gray text
+    border: '#424242'          // Dark gray border
+  };
 
   const navItems = [
     { path: '/', name: 'Dashboard', icon: <DashboardIcon /> },
@@ -66,8 +78,8 @@ const Sidebar = () => {
         flexShrink: 0,
         position: 'fixed',
         height: '100vh',
-        bgcolor: theme.palette.background.paper,
-        borderRight: `1px solid ${theme.palette.divider}`,
+        bgcolor: colors.paper,
+        borderRight: `1px solid ${colors.border}`,
         zIndex: theme.zIndex.drawer + 1
       }}
     >
@@ -81,22 +93,29 @@ const Sidebar = () => {
               to={item.path}
               selected={location.pathname === item.path}
               sx={{
+                color: colors.textPrimary,
                 '&:hover': {
-                  backgroundColor: 'rgba(144, 202, 249, 0.08)',
+                  backgroundColor: 'rgba(100, 181, 246, 0.08)', // Using secondary blue with opacity
                   '& .MuiListItemIcon-root': {
-                    color: theme.palette.primary.main
+                    color: colors.secondary
                   }
                 },
                 '&.Mui-selected': {
-                  backgroundColor: 'rgba(144, 202, 249, 0.16)',
+                  backgroundColor: 'rgba(100, 181, 246, 0.16)', // Using secondary blue with opacity
                   '& .MuiListItemIcon-root': {
-                    color: theme.palette.primary.main
+                    color: colors.secondary
+                  },
+                  '& .MuiListItemText-primary': {
+                    fontWeight: 700
                   }
                 },
                 ...item.sx
               }}
             >
-              <ListItemIcon sx={{ minWidth: '40px' }}>
+              <ListItemIcon sx={{ 
+                minWidth: '40px',
+                color: colors.textSecondary 
+              }}>
                 {item.icon}
               </ListItemIcon>
               <ListItemText 
